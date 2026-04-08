@@ -1,19 +1,23 @@
 import os
+
+#a partir dessa função - importe essa biblioteca
 from tkinter.filedialog import askdirectory 
 
-caminho = askdirectory(title='selecione uma pasta')
+caminho = askdirectory(title="selecione uma pasta")
 
-lista_caminhos = os.listdir(caminho)
-lista_caminhos.sort()
-print(lista_caminhos)
+lista_arquivos = os.listdir(caminho)
 
-locals = {
-    "imagens": (".png", ".jpg", ".jpeg"),
-    "videos": (".mp4", ".avi", ".mkv"),
-    "documentos": (".pdf", ".docx", ".txt"),
-    "csv": (".csv"),
+locais = {
+    "imagens": [".png", ".jpg", ".jpeg"],
+    "videos": [".mp4", ".avi", ".mkv"],
+    "documentos": [".pdf", ".docx", ".txt"],
+    "csv": [".csv"],
 }
 
-for arquivo in lista_caminhos:
+for arquivo in lista_arquivos:
    nome, extensao = os.path.splitext(f"{caminho}/{arquivo}")
-   
+   for pasta in locais: 
+      if extensao in locais[pasta]:
+        if not os.path.exists(f"{caminho}/{pasta}"):
+            os.mkdir(f"{caminho}/{pasta}")
+        os.rename(f"{caminho}/{arquivo}", f"{caminho}/{pasta}/{arquivo}")
